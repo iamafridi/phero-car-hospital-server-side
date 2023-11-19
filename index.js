@@ -101,6 +101,10 @@ async function run() {
     app.get("/bookings", logger, verifyToken, async (req, res) => {
       //   console.log("token", req.cookies.token);
       console.log("From Valid token", req.user);
+      if (req.query.email !== req.user.email) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      }
+
       let query = {};
       if (req.query?.email) {
         query = { email: req.query.email };
